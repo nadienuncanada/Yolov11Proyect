@@ -1,7 +1,12 @@
 # Yolov11Proyect
 Paso para correr el programa:
-pip install poetry
-cd poetry-demo
-poetry install
-poetry shell
-run test.py
+<br>
+-pip install poetry
+<br>
+-cd poetry-demo
+<br>
+-poetry install
+<br>
+-poetry shell
+<br>
+-run test.py
