@@ -1,4 +1,5 @@
 # Yolov11Proyect
+WIP
 Paso para correr el programa:
 <br>
 -pip install poetry
