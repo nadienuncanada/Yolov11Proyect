@@ -10,6 +10,7 @@ def get_random_color():
     return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 if __name__ == '__main__':
+    clear_stored_images = True
     cap = cv2.VideoCapture(0)
     model = YOLO("yolo11n.pt")
     tracker = Sort()
@@ -57,7 +58,8 @@ if __name__ == '__main__':
                 cv2.imwrite(temp_image_path, frame[ymin:ymax, xmin:xmax])
 
                 # Obtener el ID de la imagen usando la función get_id_of_image
-                image_id = get_id_of_image(temp_image_path)
+                image_id = get_id_of_image(temp_image_path, clear=clear_stored_images)
+                clear_stored_images = False
 
                 # Dibujar rectángulo
                 cv2.rectangle(img=frame, pt1=(xmin, ymin), pt2=(xmax, ymax), 

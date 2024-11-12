@@ -1,2 +1,5 @@
 /src/facial_recognition/temp
+/src/facial_recognition/stored-images
+/src/facial_recognition/__pycache__/*
 src/__pycache__/*
+

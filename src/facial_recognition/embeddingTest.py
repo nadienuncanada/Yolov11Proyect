@@ -140,7 +140,7 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
         file.write(f"{count + 1}\n")
         file.write(" ".join(map(str, updated_sum)))
 
-def get_id_of_embedding(image_path, embedding, stored_path="src/facial_recognition/stored-images"):
+def get_id_of_embedding(image_path, embedding, stored_path):
     """
     Retorna el ID de un embedding dado, y guarda la imagen en 'stored-images/id'.
     
@@ -165,10 +165,19 @@ def get_id_of_embedding(image_path, embedding, stored_path="src/facial_recogniti
 
 ############# -------------------- FUNCION QUE SE LLAMA DESDE AFUERA ("api") -------------------- #############
 
-def get_id_of_image(image_path):
+def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-images", clear=False):
     '''
     Esta funcion recibe la ruta de una imagen y retorna el id del objeto reconocido
     '''
+    
+    # Crear carpeta "stored_path" si no existe, y si existe vaciarla
+    if os.path.exists(stored_path):
+        if clear:
+            shutil.rmtree(stored_path)
+            os.makedirs(stored_path)
+    else:
+        os.makedirs(stored_path)
+
     embedding = get_embedding_of_image(image_path)
-    id = get_id_of_embedding(image_path,embedding)
+    id = get_id_of_embedding(image_path, embedding, stored_path)
     return id
