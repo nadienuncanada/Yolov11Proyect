@@ -1,7 +1,7 @@
 """
     ESTO ES UN MODULO HDP RECONOCELO
 """
-
+import time
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
@@ -74,7 +74,7 @@ def average_embedding(file):
     stored_average = [x / count for x in stored_sum_embedding]
     return stored_average
 
-def get_existing_embedding_id(stored_path, embedding):
+def get_existing_embedding_id(stored_path, embedding, similarity_threshold):
     """
     Busca un embedding similar en las carpetas existentes.
     
@@ -86,7 +86,7 @@ def get_existing_embedding_id(stored_path, embedding):
         - int: ID de la carpeta que contiene un embedding similar o -1 si no se encuentra.
     """
     best_match_id = -1
-    highest_similarity = 0.50
+    highest_similarity = similarity_threshold
 
     for folder_name in os.listdir(stored_path):
         folder_path = os.path.join(stored_path, folder_name)
@@ -116,9 +116,10 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
     folder_path = os.path.join(stored_path, str(image_id))
     os.makedirs(folder_path, exist_ok=True)
     
-    # Guarda la imagen con un número autoincremental
+    # Guarda la imagen con un número autoincremental + timestamp
+    timestamp = time.time()
     image_count = len(os.listdir(folder_path))-1 #TODO: REVISAR QUE HAGA LO MISMO QUE ESTO: len([f for f in os.listdir(folder_path) if f.endswith('.jpg')])
-    new_image_path = os.path.join(folder_path, f"{image_count + 1}.jpg")
+    new_image_path = os.path.join(folder_path, f"{image_count + 1} - {timestamp}.jpg")
     shutil.copy(image_path, new_image_path)
     
     # Actualiza el archivo de embedding promedio
@@ -140,7 +141,7 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
         file.write(f"{count + 1}\n")
         file.write(" ".join(map(str, updated_sum)))
 
-def get_id_of_embedding(image_path, embedding, stored_path):
+def get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold):
     """
     Retorna el ID de un embedding dado, y guarda la imagen en 'stored-images/id'.
     
@@ -153,7 +154,7 @@ def get_id_of_embedding(image_path, embedding, stored_path):
         - int: ID de la carpeta donde se guardó la imagen.
     """
 
-    image_id = get_existing_embedding_id(stored_path, embedding)
+    image_id = get_existing_embedding_id(stored_path, embedding, similarity_threshold)
     
     if image_id == -1:
         # Usamos la cantidad de archivos en stored_path para asignar un nuevo ID
@@ -165,7 +166,7 @@ def get_id_of_embedding(image_path, embedding, stored_path):
 
 ############# -------------------- FUNCION QUE SE LLAMA DESDE AFUERA ("api") -------------------- #############
 
-def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-images", clear=False):
+def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-images", clear=False, similarity_threshold=0.5):
     '''
     Esta funcion recibe la ruta de una imagen y retorna el id del objeto reconocido
     '''
@@ -179,5 +180,5 @@ def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-image
         os.makedirs(stored_path)
 
     embedding = get_embedding_of_image(image_path)
-    id = get_id_of_embedding(image_path, embedding, stored_path)
+    id = get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold)
     return id

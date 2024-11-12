@@ -5,14 +5,18 @@ from src.sort import Sort
 import random
 import os
 from embeddingTest import get_id_of_image
+from metadata import meta_clear_stored_images, meta_similarity_threshold, meta_model_name
 
 def get_random_color():
     return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 if __name__ == '__main__':
-    clear_stored_images = True
+    clear_stored_images = meta_clear_stored_images
+    similarity_threshold = meta_similarity_threshold
+    model_name = meta_model_name
+
     cap = cv2.VideoCapture(0)
-    model = YOLO("yolo11n.pt")
+    model = YOLO(model_name)
     tracker = Sort()
 
     # Diccionario para mantener colores consistentes por clase
@@ -58,7 +62,7 @@ if __name__ == '__main__':
                 cv2.imwrite(temp_image_path, frame[ymin:ymax, xmin:xmax])
 
                 # Obtener el ID de la imagen usando la función get_id_of_image
-                image_id = get_id_of_image(temp_image_path, clear=clear_stored_images)
+                image_id = get_id_of_image(temp_image_path, clear=clear_stored_images, similarity_threshold=similarity_threshold)
                 clear_stored_images = False
 
                 # Dibujar rectángulo
