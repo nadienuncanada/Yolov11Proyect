@@ -1,4 +1,5 @@
 # Yolov11Proyect
+
 WIP
 Paso para correr el programa:
 <br>
@@ -9,3 +10,5 @@ Paso para correr el programa:
 -poetry shell
 <br>
 -run test.py
+<br>
+Para agregar una nueva dependecia: poetry add dependencia

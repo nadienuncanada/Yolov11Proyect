@@ -4,7 +4,7 @@ from ultralytics import YOLO
 from src.sort import Sort
 import random
 import os
-from embedding import get_id_of_image
+from src.facial_recognition.embeddingTest import get_id_of_image
 
 def get_random_color():
     return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))

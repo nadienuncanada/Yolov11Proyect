@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 ultralytics = "^8.3.27"
+filterpy = "^1.4.5"
 
 
 [build-system]
