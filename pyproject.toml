@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "poetry-demo"
+name = "Yolov11Proyect"
 version = "0.1.0"
 description = ""
 authors = ["Ignacio <meloignacionicolas@gmail.com>"]
 readme = "README.md"
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
