@@ -1,6 +1,10 @@
 # Yolov11Proyect
 
-WIP
+<br>
+Para agregar una nueva dependecia: 
+<br>
+poetry add dependencia
+<br>
 Paso para correr el programa:
 <br>
 -pip install poetry
@@ -11,4 +15,4 @@ Paso para correr el programa:
 <br>
 -run test.py
 <br>
-Para agregar una nueva dependecia: poetry add dependencia
+
