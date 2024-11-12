@@ -86,7 +86,7 @@ def get_existing_embedding_id(stored_path, embedding):
         - int: ID de la carpeta que contiene un embedding similar o -1 si no se encuentra.
     """
     best_match_id = -1
-    highest_similarity = 0.7
+    highest_similarity = 0.50
 
     for folder_name in os.listdir(stored_path):
         folder_path = os.path.join(stored_path, folder_name)
@@ -140,7 +140,7 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
         file.write(f"{count + 1}\n")
         file.write(" ".join(map(str, updated_sum)))
 
-def get_id_of_embedding(image_path, embedding, stored_path="stored-images"):
+def get_id_of_embedding(image_path, embedding, stored_path="src/facial_recognition/stored-images"):
     """
     Retorna el ID de un embedding dado, y guarda la imagen en 'stored-images/id'.
     

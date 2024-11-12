@@ -4,7 +4,7 @@ from ultralytics import YOLO
 from src.sort import Sort
 import random
 import os
-from src.facial_recognition.embeddingTest import get_id_of_image
+from embeddingTest import get_id_of_image
 
 def get_random_color():
     return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
@@ -18,8 +18,8 @@ if __name__ == '__main__':
     class_colors = {}
 
     # Crear carpeta "temp" si no existe
-    if not os.path.exists("temp"):
-        os.makedirs("temp")
+    if not os.path.exists("/src/facial_recognition/temp"):
+      os.makedirs("/src/facial_recognition/temp")
 
     while cap.isOpened():
         status, frame = cap.read()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
                 color = class_colors[class_name]
 
                 # Guardar la imagen en la carpeta "temp"
-                temp_image_path = f"temp/{track_id}.jpg"
+                temp_image_path = f"./src/facial_recognition/temp/{track_id}.jpg"
                 cv2.imwrite(temp_image_path, frame[ymin:ymax, xmin:xmax])
 
                 # Obtener el ID de la imagen usando la función get_id_of_image
