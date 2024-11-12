@@ -3,7 +3,7 @@
 <br>
 Para agregar una nueva dependecia: 
 <br>
-poetry add dependencia
+-poetry add dependencia
 <br>
 Paso para correr el programa:
 <br>
