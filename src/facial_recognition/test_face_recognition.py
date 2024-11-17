@@ -5,7 +5,7 @@ from src.sort import Sort
 import random
 import os
 from embeddingTest import get_id_of_image
-from metadata import meta_clear_stored_images, meta_similarity_threshold, meta_model_name
+from metadata import meta_clear_stored_images, meta_similarity_threshold, meta_model_name, meta_cant_max_imagenes
 
 def get_random_color():
     return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 cv2.imwrite(temp_image_path, frame[ymin:ymax, xmin:xmax])
 
                 # Obtener el ID de la imagen usando la función get_id_of_image
-                image_id = get_id_of_image(temp_image_path, clear=clear_stored_images, similarity_threshold=similarity_threshold)
+                image_id = get_id_of_image(temp_image_path, clear=clear_stored_images, similarity_threshold=similarity_threshold, cant_max_imagenes=meta_cant_max_imagenes)
                 clear_stored_images = False
 
                 # Dibujar rectángulo

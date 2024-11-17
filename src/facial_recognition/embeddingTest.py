@@ -103,7 +103,7 @@ def get_existing_embedding_id(stored_path, embedding, similarity_threshold):
                     
     return best_match_id
 
-def save_image_and_update_embedding(stored_path, image_path, image_id, embedding):
+def save_image_and_update_embedding(stored_path, image_path, image_id, embedding, cant_max_imagenes):
     """
     Guarda la imagen en la carpeta correspondiente y actualiza el archivo de embedding promedio.
     
@@ -119,8 +119,9 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
     # Guarda la imagen con un número autoincremental + timestamp
     timestamp = time.time()
     image_count = len(os.listdir(folder_path))-1 #TODO: REVISAR QUE HAGA LO MISMO QUE ESTO: len([f for f in os.listdir(folder_path) if f.endswith('.jpg')])
-    new_image_path = os.path.join(folder_path, f"{image_count + 1} - {timestamp}.jpg")
-    shutil.copy(image_path, new_image_path)
+    if not image_count > cant_max_imagenes:
+        new_image_path = os.path.join(folder_path, f"{image_count + 1} - {timestamp}.jpg")
+        shutil.copy(image_path, new_image_path)
     
     # Actualiza el archivo de embedding promedio
     embedding_file = os.path.join(folder_path, "embedding.txt")
@@ -141,7 +142,7 @@ def save_image_and_update_embedding(stored_path, image_path, image_id, embedding
         file.write(f"{count + 1}\n")
         file.write(" ".join(map(str, updated_sum)))
 
-def get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold):
+def get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold, cant_max_imagenes):
     """
     Retorna el ID de un embedding dado, y guarda la imagen en 'stored-images/id'.
     
@@ -161,12 +162,12 @@ def get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold
         num_files = len(os.listdir(stored_path))
         image_id = num_files
     
-    save_image_and_update_embedding(stored_path, image_path, image_id, embedding)
+    save_image_and_update_embedding(stored_path, image_path, image_id, embedding, cant_max_imagenes)
     return image_id
 
 ############# -------------------- FUNCION QUE SE LLAMA DESDE AFUERA ("api") -------------------- #############
 
-def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-images", clear=False, similarity_threshold=0.5):
+def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-images", clear=False, similarity_threshold=0.5, cant_max_imagenes = 15):
     '''
     Esta funcion recibe la ruta de una imagen y retorna el id del objeto reconocido
     '''
@@ -180,5 +181,5 @@ def get_id_of_image(image_path, stored_path="src/facial_recognition/stored-image
         os.makedirs(stored_path)
 
     embedding = get_embedding_of_image(image_path)
-    id = get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold)
+    id = get_id_of_embedding(image_path, embedding, stored_path, similarity_threshold, cant_max_imagenes)
     return id
